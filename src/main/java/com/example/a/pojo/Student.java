@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("demo.STUDENT")
+@TableName("demo.dbo.STUDENT")
 @XStreamAlias("学生")
 public class Student {
     @TableId(value = "学号")

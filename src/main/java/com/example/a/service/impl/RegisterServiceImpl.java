@@ -21,7 +21,7 @@ public class RegisterServiceImpl implements RegisterService {
         String password = user.getPassword();
         String auth = user.getAuth();
         // check if the name is used
-        User tmp = userMapper.findByName(name);
+        User tmp = userMapper.selectById(user.getName());
         Map<String, String> res = new HashMap<>();
         if (tmp != null) {
             res.put("msg", "用户名已被占用");
@@ -34,7 +34,7 @@ public class RegisterServiceImpl implements RegisterService {
         }
         name = name.trim();
         // password = encoder.encode(password);
-        userMapper.insertOne(new User(name, password, auth));
+        userMapper.insert(new User(name, password, auth));
         res.put("msg", "注册成功");
         String token = TokenUtil.getToken(name);
         res.put("token", token);

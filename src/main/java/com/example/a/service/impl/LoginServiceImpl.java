@@ -18,7 +18,7 @@ public class LoginServiceImpl implements LoginService {
     public Map<String, String> login(User user) {
         // 查询用户名是否存在
         Map<String, String> res = new HashMap<>();
-        User tmp = userMapper.findByName(user.getName());
+        User tmp = userMapper.selectById(user.getName());
         if (tmp == null) {
             res.put("msg", "登录失败，用户名不存在");
             return res;

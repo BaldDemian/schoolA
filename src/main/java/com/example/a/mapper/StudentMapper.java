@@ -10,10 +10,4 @@ import java.util.List;
 
 @Mapper
 public interface StudentMapper extends BaseMapper<Student> {
-    @Select("select * from \"STUDENT\"")
-    List<Student> findAllStudents();
-
-    @Insert("insert into \"STUDENT\" (学号, 姓名, 性别, 院系, 关联账户) values(#{sno}, #{name}, #{sex}, #{dept}, #{account})")
-    void insertOne(Student student);
-
 }

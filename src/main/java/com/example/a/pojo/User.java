@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("demo.ACC")
+@TableName("demo.dbo.ACC")
 public class User {
     @TableId(value = "账户名")
     private String name;

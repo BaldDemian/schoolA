@@ -11,10 +11,4 @@ import java.util.List;
 
 @Mapper
 public interface EnrollMapper extends BaseMapper<Enroll> {
-    @Select("select * from demo.ENROLL")
-    List<Enroll> findAllEnroll();
-
-    @Delete("delete from demo.ENROLL where 课程编号 = #{cno} and 学生编号 = #{sno}")
-    // 删除掉一条选课记录，(cno, sno)是联合主键
-    void deleteByCnoSno(@Param("cno") String cno, @Param("sno") String sno);
 }

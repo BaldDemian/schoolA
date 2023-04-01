@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("demo.ENROLL")
+@TableName("demo.dbo.ENROLL")
 @XStreamAlias("选课")
 public class Enroll {
     @TableField(value = "学生编号")
