@@ -31,7 +31,7 @@ public class EnrollController {
     public void deleteCoursesSelectionTable(@RequestBody String courses_selectionXml){
         xStream.processAnnotations(Enroll.class);
         Enroll enroll = (Enroll) xStream.fromXML(courses_selectionXml);
-        // todo:由于MyBatisPlus不支持联合主键，所以语句需要手写
+        enrollMapper.deleteByCnoAndSno(enroll.getCno(), enroll.getSno());
     }
 
     @PostMapping("/courses_selection/update")
