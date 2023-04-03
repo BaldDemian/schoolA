@@ -1,11 +1,15 @@
 package com.example.a.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.a.mapper.EnrollMapper;
 import com.example.a.pojo.Enroll;
+import com.example.a.pojo.Student;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class EnrollController {
@@ -39,5 +43,15 @@ public class EnrollController {
         xStream.processAnnotations(Enroll.class);
         Enroll enroll = (Enroll) xStream.fromXML(courses_selectionXml);
         enrollMapper.updateById(enroll);
+    }
+
+    @PostMapping("/courses_selection/find_by_sno")
+    public String findEnrollBySno(@RequestBody String studentXML) {
+        xStream.processAnnotations(Student.class);
+        Student student = (Student) xStream.fromXML(studentXML);
+        QueryWrapper<Enroll> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("学生编号", student.getSno());
+        List<Enroll> enrollList = enrollMapper.selectList(queryWrapper);
+        return xStream.toXML(enrollList);
     }
 }
