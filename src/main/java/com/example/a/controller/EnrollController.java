@@ -46,7 +46,7 @@ public class EnrollController {
     }
 
     @PostMapping("/courses_selection/find_by_sno")
-    public String findEnrollBySno(@RequestBody String studentXML) {
+    public String findEnrollBySno(@RequestParam String studentXML) {
         xStream.processAnnotations(Student.class);
         Student student = (Student) xStream.fromXML(studentXML);
         QueryWrapper<Enroll> queryWrapper = new QueryWrapper<>();
