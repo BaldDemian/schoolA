@@ -23,10 +23,10 @@ public class LoginServiceImpl implements LoginService {
             res.put("msg", "登录失败，用户名不存在");
             return res;
         }
-        String token = TokenUtil.getToken(user.getName());
+        //String token = TokenUtil.getToken(user.getName());
         res.put("msg", "登录成功");
         res.put("account", user.getName());
-        res.put("token", token);
+        //res.put("token", token);
         return res;
     }
 }

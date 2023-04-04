@@ -8,10 +8,7 @@ import com.example.a.utils.TokenUtil;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 @RestController
@@ -31,7 +28,7 @@ public class UserController {
         Map<String, String> res = registerService.register(user);
         return xStream.toXML(res);
     }
-    @PostMapping("/login")
+    @GetMapping("/login")
     public String login(@RequestParam String userAccountXML) {
         // 解析XML到User实例
         xStream.processAnnotations(User.class);

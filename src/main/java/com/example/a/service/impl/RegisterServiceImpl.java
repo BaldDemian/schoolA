@@ -36,8 +36,8 @@ public class RegisterServiceImpl implements RegisterService {
         // password = encoder.encode(password);
         userMapper.insert(new User(name, password, auth));
         res.put("msg", "注册成功");
-        String token = TokenUtil.getToken(name);
-        res.put("token", token);
+        //String token = TokenUtil.getToken(name);
+        //res.put("token", token);
         res.put("account", name);
         return res;
     }
