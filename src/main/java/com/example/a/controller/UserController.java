@@ -22,17 +22,17 @@ public class UserController {
     RegisterService registerService;
 
     @GetMapping("/register")
-    public String register(@RequestParam String userAccountXML) {
+    public String register(@RequestParam String userAccountXml) {
         xStream.processAnnotations(User.class);
-        User user = (User) xStream.fromXML(userAccountXML);
+        User user = (User) xStream.fromXML(userAccountXml);
         Map<String, String> res = registerService.register(user);
         return xStream.toXML(res);
     }
     @GetMapping("/login")
-    public String login(@RequestParam String userAccountXML) {
+    public String login(@RequestParam String userAccountXml) {
         // 解析XML到User实例
         xStream.processAnnotations(User.class);
-        User user = (User) xStream.fromXML(userAccountXML);
+        User user = (User) xStream.fromXML(userAccountXml);
         // 接收结果
         Map<String, String> res = loginService.login(user);
         // 将结果转换为XML返回

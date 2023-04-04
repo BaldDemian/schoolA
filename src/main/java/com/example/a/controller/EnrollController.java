@@ -115,9 +115,9 @@ public class EnrollController {
     }
 
     @GetMapping("/courses_selection/find_by_sno")
-    public String findEnrollBySno(@RequestParam String studentXML) {
+    public String findEnrollBySno(@RequestParam String studentXml) {
         xStream.processAnnotations(Student.class);
-        Student student = (Student) xStream.fromXML(studentXML);
+        Student student = (Student) xStream.fromXML(studentXml);
         QueryWrapper<Enroll> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("学生编号", student.getSno());
         List<Enroll> enrollList = enrollMapper.selectList(queryWrapper);
