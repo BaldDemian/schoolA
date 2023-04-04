@@ -23,6 +23,9 @@ public class Course {
     @TableField(value = "学分")
     @XStreamAlias("学分")
     private String points;
+    @TableField(value = "课时")
+    @XStreamAlias("课时")
+    private String time;
     @TableField(value = "授课老师")
     @XStreamAlias("授课老师")
     private String teacher;
