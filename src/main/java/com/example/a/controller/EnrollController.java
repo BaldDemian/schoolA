@@ -41,6 +41,7 @@ public class EnrollController {
         System.out.println("frontend return: " + courses_selectionXml);
         xStream.processAnnotations(Enroll.class);
         Enroll enroll = (Enroll) xStream.fromXML(courses_selectionXml);
+        System.out.println(enroll);
         // 判断课程号是否以1开头，如果以1开头，表示是本院系的课，直接添加一条选课记录
         String cno = enroll.getCno();
         if (cno.charAt(0) == '1') {
@@ -152,21 +153,14 @@ public class EnrollController {
         enrollMapper.updateById(enroll);
     }
 
-    @GetMapping("/courses_selection/find_by_sno")
-    public String findEnrollBySno(@RequestParam String studentXml) {
-        xStream.processAnnotations(Student.class);
-        Student student = (Student) xStream.fromXML(studentXml);
+    @GetMapping("/courses_selection/searchBySno")
+    public String findEnrollBySno(@RequestParam String courses_selectionXml) {
+        xStream.processAnnotations(Enroll.class);
+        Enroll enroll0 = (Enroll) xStream.fromXML(courses_selectionXml);
         QueryWrapper<Enroll> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("学生编号", student.getSno());
+        queryWrapper.eq("学生编号", enroll0.getSno());
         List<Enroll> enrollList = enrollMapper.selectList(queryWrapper);
-        // 查出对应的Course
-        List<Course> courseList = new ArrayList<>();
-        for (Enroll enroll: enrollList) {
-            String cno = enroll.getCno();
-            Course course = courseMapper.selectById(cno);
-            courseList.add(course);
-        }
-        xStream.processAnnotations(Course.class);
-        return xStream.toXML(courseList);
+        System.out.println(enrollList);
+        return xStream.toXML(enrollList);
     }
 }
