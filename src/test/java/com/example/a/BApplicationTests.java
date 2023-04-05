@@ -35,11 +35,6 @@ class AApplicationTests {
     }
 
     @Test
-    void testDatabase2() {
-        enrollMapper.deleteByCnoAndSno("11", "11");
-    }
-
-    @Test
     void testDatabase3() {
         QueryWrapper<Enroll> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("学生编号", "11");

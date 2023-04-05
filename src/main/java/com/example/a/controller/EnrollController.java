@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 public class EnrollController {
     XStream xStream = new XStream(new StaxDriver());
-    
+
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
@@ -52,7 +52,7 @@ public class EnrollController {
             xStream.processAnnotations(Student.class);
             String studentXML = xStream.toXML(student);
             String from = "a";
-            String to = "";
+            String to;
             if (cno.charAt(0) == '2') {
                 // 请求共享B的课
                 to = "b";
@@ -89,7 +89,48 @@ public class EnrollController {
     public void deleteCoursesSelectionTable(@RequestParam String courses_selectionXml){
         xStream.processAnnotations(Enroll.class);
         Enroll enroll = (Enroll) xStream.fromXML(courses_selectionXml);
-        enrollMapper.deleteByCnoAndSno(enroll.getCno(), enroll.getSno());
+        // 校验课程号
+        String cno = enroll.getCno();
+        if (cno.charAt(0) == '1') {
+            // 本院系的课，直接删除
+            QueryWrapper<Enroll> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("课程编号", enroll.getCno());
+            queryWrapper.eq("学生编号", enroll.getSno());
+            enrollMapper.delete(queryWrapper);
+        } else {
+            String url = "http://localhost:8081/integration/httpTestDelete/?studentXml={value}&courses_selectionXml={value}&curr={value}&transTo={value}";
+            String from = "a";
+            String to;
+            if (cno.charAt(0) == '2') {
+                to = "b";
+            } else {
+                to = "c";
+            }
+            Student student = studentMapper.selectById(enroll.getSno());
+            xStream.processAnnotations(Student.class);
+            String studentXML = xStream.toXML(student);
+            String resp = restTemplate.getForObject(url, String.class, studentXML, courses_selectionXml, from, to);
+        }
+    }
+
+    @GetMapping("/courses_selection/delete_share_course")
+    public void deleteSharedCoursesSelection(@RequestParam String courses_selectionXml) {
+        xStream.processAnnotations(Enroll.class);
+        Enroll enroll = (Enroll) xStream.fromXML(courses_selectionXml);
+        // 获取学号
+        String sno = enroll.getCno();
+        // 先删除掉当前的选课信息
+        QueryWrapper<Enroll> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("学生编号", sno);
+        queryWrapper.eq("课程编号", enroll.getCno());
+        enrollMapper.delete(queryWrapper);
+        // 检查当前跨选生在本院系是否还有选课记录，如没有，删除该学生
+        QueryWrapper<Enroll> queryWrapper0 = new QueryWrapper<>();
+        queryWrapper0.eq("学生编号", sno);
+        List<Enroll> enrollList = enrollMapper.selectList(queryWrapper0);
+        if (enrollList.size() == 0) {
+            studentMapper.deleteById(sno);
+        }
     }
 
     @GetMapping("/courses_selection/update")

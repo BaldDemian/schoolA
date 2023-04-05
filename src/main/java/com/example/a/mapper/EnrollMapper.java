@@ -12,7 +12,4 @@ import java.util.List;
 
 @Mapper
 public interface EnrollMapper extends BaseMapper<Enroll> {
-
-    @Delete("delete from ENROLL where 学生编号 = #{sno} and 课程编号 = #{cno}")
-    void deleteByCnoAndSno(@Param("sno") String sno, @Param("cno") String cno);
 }
