@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 public class EnrollController {
     XStream xStream = new XStream(new StaxDriver());
+    
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
