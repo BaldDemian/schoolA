@@ -45,6 +45,14 @@ public class EnrollController {
         // 判断课程号是否以1开头，如果以1开头，表示是本院系的课，直接添加一条选课记录
         String cno = enroll.getCno();
         if (cno.charAt(0) == '1') {
+            // 判断下是否已经有选课记录
+            QueryWrapper<Enroll> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("课程编号", cno);
+            queryWrapper.eq("学生编号", enroll.getSno());
+            Enroll tmp = enrollMapper.selectOne(queryWrapper);
+            if (tmp != null) {
+                return;
+            }
             enrollMapper.insert(enroll);
         } else {
             // 不是以1开头，向集成服务器发送选课请求
@@ -161,6 +169,7 @@ public class EnrollController {
         queryWrapper.eq("学生编号", enroll0.getSno());
         List<Enroll> enrollList = enrollMapper.selectList(queryWrapper);
         System.out.println(enrollList);
+        System.out.println(xStream.toXML(enrollList));
         return xStream.toXML(enrollList);
     }
 }
