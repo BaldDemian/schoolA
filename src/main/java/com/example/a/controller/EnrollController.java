@@ -14,12 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class EnrollController {
     XStream xStream = new XStream(new StaxDriver());
+    private String ip = "192.168.43.195"; // ip of central server
 
     @Autowired
     private RestTemplate restTemplate;
@@ -56,7 +56,7 @@ public class EnrollController {
             enrollMapper.insert(enroll);
         } else {
             // 不是以1开头，向集成服务器发送选课请求
-            String url = "http://localhost:8081/integration/httpTest/?studentXml={value}&courses_selectionXml={value}&curr={value}&transTo={value}";
+            String url = "http://" + ip + ":8081/integration/httpTest/?studentXml={value}&courses_selectionXml={value}&curr={value}&transTo={value}";
             Student student = studentMapper.selectById(enroll.getSno());
             xStream.processAnnotations(Student.class);
             String studentXML = xStream.toXML(student);
@@ -119,7 +119,7 @@ public class EnrollController {
                 }
             }
         } else {
-            String url = "http://localhost:8081/integration/httpTestDelete/?studentXml={value}&courses_selectionXml={value}&curr={value}&transTo={value}";
+            String url = "http://" + ip + ":8081/integration/httpTestDelete/?studentXml={value}&courses_selectionXml={value}&curr={value}&transTo={value}";
             String from = "a";
             String to;
             if (cno.charAt(0) == '2') {
